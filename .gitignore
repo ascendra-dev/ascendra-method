@@ -7,3 +7,4 @@ node_modules/
 projects/*
 !projects/TEMPLATE
 !projects/TEMPLATE/**
+.vscode/
