@@ -17,11 +17,11 @@ The library's own documents are read where they live, never copied here.
 
 | File | Holds | Read by |
 |---|---|---|
-| [`api-contract.md`](api-contract.md) | The API's wire rules: error shape (Rule 1), 400 vs 422 (2), success shape (3), lists (4), methods (5), query parameters (6), headers (7), optimistic concurrency (8), exports (9) | `/plan-unit` (A0, endpoint blocks), `/build-checkpoint` |
+| [`api-contract.md`](api-contract.md) | The API's wire rules: error shape (Rule 1), 400 vs 422 (2), success shape (3), lists (4), methods (5), query parameters (6), headers (7), optimistic concurrency (8), exports (9) | `/plan-unit` (A0, endpoint blocks), `/build-chunk` |
 | [`validation-messages.md`](validation-messages.md) | How validation messages are written | `/plan-unit` (A3 field validation) |
-| [`ui/usage-rules.md`](ui/usage-rules.md) | How `ascendra-ui` is used, learned in projects (`AUI-NNN`) | `/plan-unit`, `/build-checkpoint`, `/design-group` |
-| [`ui/code-style.md`](ui/code-style.md) | How the JSX and TypeScript around components is written | `/build-checkpoint` |
-| [`commons.md`](commons.md) | Adopting a commons module; `.core`-only imports; logging changes to copies | `/plan-unit` (A6), `/build-checkpoint` |
+| [`ui/usage-rules.md`](ui/usage-rules.md) | How `ascendra-ui` is used, learned in projects (`AUI-NNN`) | `/plan-unit`, `/build-chunk`, `/design-group` |
+| [`ui/code-style.md`](ui/code-style.md) | How the JSX and TypeScript around components is written | `/build-chunk` |
+| [`commons.md`](commons.md) | Adopting a commons module; `.core`-only imports; logging changes to copies | `/plan-unit` (A6), `/build-chunk` |
 | [`canvas.md`](canvas.md) | Drawing with the real components on a design canvas | `/design-group` |
 
 ## What a plan takes from this profile

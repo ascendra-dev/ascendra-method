@@ -1,10 +1,10 @@
 # Plan Unit
 
-Plans the build of one unit (usually one approved design group) and writes it as one living document, `projects/{CODE}/delivery/units/b{UU}-{slug}.md`, from `projects/TEMPLATE/delivery/units/unit.template.md` (METHOD.md section 8.2). The plan holds every implementation decision and the build order, for the PO, the developer and the AI that builds it. `/build-checkpoint` builds it one checkpoint at a time.
+Plans the build of one unit (usually one approved design group) and writes it as one living document, `projects/{CODE}/delivery/units/b{UU}-{slug}.md`, from `projects/TEMPLATE/delivery/units/unit.template.md` (METHOD.md section 8.2). The plan holds every implementation decision and the build order, for the PO, the developer and the AI that builds it. `/build-chunk` builds it one checkpoint at a time.
 
 The command takes every decision itself and writes each as question, answer and why, so the reviewers check decisions instead of filling gaps. It stops for the PO only on a change to the approved design, content for something the design implies but doesn't draw, and a product question the documents don't answer. It writes no code.
 
-It is the only delivery step that reads the wider documents. Everything the build needs is copied into the plan (principle 7), so `/build-checkpoint` reads the plan and the code. Plans are written two or three units ahead, in build order, each reviewed before the next is planned; planning several in one session shares the common reads.
+It is the only delivery step that reads the wider documents. Everything the build needs is copied into the plan (principle 7), so `/build-chunk` reads the plan and the code. Plans are written two or three units ahead, in build order, each reviewed before the next is planned; planning several in one session shares the common reads.
 
 In worklog mode (METHOD.md section 10), the new plan is written directly, since it is a new Draft file; every other change (the build index, the decision log, another plan) is an entry in the planner's own worklog, unless the planner holds the hold.
 
@@ -206,7 +206,7 @@ Write `projects/{CODE}/delivery/units/b{UU}-{slug}.md` from the template; `{slug
 
 1. **`delivery/index.md`:** add or update the unit's row (plan, `Draft`, `0 of N built`).
 2. **`decisions.md`:** a `DEC` entry recording the plan written and what the PO decided in Step 7, with the link.
-3. **C2 promotions** are applied at the unit's close by `/build-checkpoint`, not now. A Step 7 answer that changes a current document now (the screen map, design rules, sample data, Requirements) is applied now, with its own `DEC` entry.
+3. **C2 promotions** are applied at the unit's close by `/build-chunk`, not now. A Step 7 answer that changes a current document now (the screen map, design rules, sample data, Requirements) is applied now, with its own `DEC` entry.
 
 **In worklog mode, unless you hold the hold:** items 1 to 3 are entries in your own worklog, in the shape of `projects/TEMPLATE/worklogs/worklog.template.md`: a **New file** entry for the plan with the index row, a **Decision** entry with a provisional ID, and a **Change** entry for each current document a Step 7 answer changes, marked Urgent if someone is building the affected unit now. Commit and push the plan and your worklog together, so the other person sees both. Otherwise commit nothing unless the PO asks.
 
@@ -228,5 +228,5 @@ Also changed:  delivery/index.md, decisions.md{, other documents}
                {or, in worklog mode: entries {IDs} in worklogs/{name}.md}
 ─────────────────────────────────────────
 Next: the PO and the developer review the plan and set it Approved,
-then /build-checkpoint {CODE} B{UU}.1.1
+then /build-chunk {CODE} B{UU}.1
 ```

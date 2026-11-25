@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| Version | 1.4 |
+| Version | 1.5 |
 | Date | 2026-11-25 |
 | Status | Agreed by the PO, 2026-11-25 |
 
@@ -91,7 +91,7 @@ Agreed with the PO, 2026-11-25. One meaning per word.
 | **Design rule** | A settled rule for how screens look and behave, kept once in the design rules | `DR-001` |
 | **Unit** | What is planned and built as one: usually one design group; sometimes part of one, or a named unit with no screens (a money spine, a security unit). Parts of another group a unit carries stay inside it, and the build index says so. Build order lives in the build index, never in the ID | `B03` builds `G03`; `B08a`, `B08b` split a group; `B-SPINE` has no group |
 | **Build plan** | One unit's plan: its decisions, then its chunks and checkpoints | file `delivery/units/b03-{slug}.md` |
-| **Chunk** | A capability a named role can use, demonstrated in one sentence. One pull request into the unit's branch; the PO accepts it before it merges. The unit's branch merges into the main line once, at the close | `B03.1`, `B-SPINE.1` |
+| **Chunk** | A capability a named role can use, demonstrated in one sentence. One pull request into the unit's branch, merged by its builder once CI passes; the PO accepts it before the unit merges. Only the PO merges the unit's branch into the main line, once, at the close | `B03.1`, `B-SPINE.1` |
 | **Checkpoint** | One behaviour a reviewer can see work, from the screen down to the database, with its tests. One commit | `B03.1.1`, `B-SPINE.1.2` |
 | **Close** | The unit's last step: final checks, promotion (section 8.4), sign-off | `B03.X`, `B-SPINE.X` |
 | **Surface** | A page, form, sheet, dialog, menu, table, card or email that a build plan names and builds | `page.staff.list`, `form.staff.invite` |
@@ -278,7 +278,7 @@ One checkpoint at a time, in the plan's order, each verified and committed on it
 
 Either way the plan is corrected in place. After building: tests pass, and the checkpoint's Built block records what was built, how long it took, what the AI decided itself, differences from the plan and the commit. At the chunk's end one report gives the acceptance steps and every decided item.
 
-At a chunk's end the PO reads what the AI decided and runs the acceptance steps on the running product, then the chunk's pull request merges into the unit's branch. At the close, after the regression, the unit's branch merges into the main line.
+At a chunk's end its builder merges the chunk's pull request into the unit's branch once CI passes. The PO accepts the chunk when it suits: reads what the AI decided and the differences from the plan, and runs the acceptance steps on the unit's branch; anything found is a fix branch into it. The chunks of one unit may be shared between people in any order, each chunk starting from the unit's branch after the one before has merged. At the close, once every chunk is accepted and the regression passes, the PO merges the unit's branch into the main line.
 
 ### 8.4 Closing a unit and promotion
 
@@ -313,6 +313,7 @@ For a project where two or more people work at once.
 - Every change to a current document is a worklog entry of a fixed kind: Decision, Built, Status, Change, Finding, New file, Question. Each names its target and the version it was written against.
 - The PO applies all entries at each chunk's acceptance (the sync), resolves conflicts, numbers the decisions and empties the worklogs.
 - **The hold:** whoever holds it edits the current documents directly, for a day working alone or a planning session. The other keeps writing their worklog.
+- **Turns, not overlap:** when people take turns (one builds a chunk, then the other), the hold passes with the chunk and the builder records directly in the plan; there is nothing to sync. Worklogs are written only while work overlaps in time: two chunks at once, or building beside planning (MD-003).
 
 A one-person project edits documents directly.
 
@@ -378,7 +379,7 @@ Only commands proven in real work, or clearly needed (principle 9).
 | `/map-screens` | Design | Writes or revises the screen map: workspaces and outputs, navigation, every screen, design groups in dependency order, coverage, parked options (section 7.1) |
 | `/design-group` | Design | Designs one group or part: reads, flow note, concepts, draw, check, review, record (section 7.2) |
 | `/plan-unit` | Delivery | Writes one unit's build plan (today `/plan-build-group`) |
-| `/build-checkpoint` | Delivery | Builds, verifies and records one checkpoint, or the close with its promotion |
+| `/build-chunk` | Delivery | Builds a chunk one checkpoint at a time, each verified, recorded and committed; or one checkpoint with `--one`; or the close with its promotion |
 | `/sync-worklogs` | Delivery | Applies every worklog entry, in worklog mode |
 
 Writing the Blueprint is done with the AI, guided by its template and `guides/`, not by a command, until a command earns its place.
@@ -398,3 +399,4 @@ Writing the Blueprint is done with the AI, guided by its template and `guides/`,
 | 1.2 | 2026-11-25 | Standards becomes its own artifact and folder (`standards/conventions.md`, `standards/patterns.md`), the project-level twin of the stack profile; Architecture holds only the expensive-to-change decisions |
 | 1.3 | 2026-11-25 | Section 11: a library's own reference documents are linked, never copied; usage rules learned while building with it live in the stack profile |
 | 1.4 | 2026-11-25 | MD-002: plans keep their length in check with a stated reason; gaps asked or decided by the AI; building through the chunk; chunk pull requests into the unit's branch, merged into the main line at the close |
+| 1.5 | 2026-11-25 | MD-003: `/build-checkpoint` renamed `/build-chunk`; the builder merges a chunk into the unit's branch, the PO accepts it and alone merges the unit into the main line; the hold passes with the chunk when people take turns |

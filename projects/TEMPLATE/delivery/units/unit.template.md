@@ -2,7 +2,7 @@
 
 > **Guide.** Living until the unit's close, then frozen (METHOD.md section 6). One unit's plan: every implementation decision and the build order, for three readers at once: the PO (requirements, screens, rules, the demo), the developer (patterns, contracts, data, order) and the AI that builds it. Nothing is written for the AI alone.
 >
-> Written by `/plan-unit`, approved by the PO and the developer, built by `/build-checkpoint` one checkpoint at a time, closed at `B{UU}.X`. How a plan is written is METHOD.md section 8.2: complete in itself; each fact once; defaults stated once in A0; small blocks as sentences; the planner's working material kept out.
+> Written by `/plan-unit`, approved by the PO and the developer, built by `/build-chunk` one checkpoint at a time, closed at `B{UU}.X`. How a plan is written is METHOD.md section 8.2: complete in itself; each fact once; defaults stated once in A0; small blocks as sentences; the planner's working material kept out.
 >
 > - **Part A, the unit:** decided once for the whole unit, read before any checkpoint.
 > - **Part B, the checkpoints:** in build order, grouped into chunks. With Part A, each checkpoint is everything needed to build, test and review it.
@@ -18,7 +18,7 @@
 > - **Names roles, not people,** except the sample people of the seed.
 > - **Names artboards by their exact title**, `SCR-NNN Screen name · state`.
 >
-> **When `/build-checkpoint` reads it:** the header, Part A in full, the checkpoint being built (or Part C), and the Built blocks of earlier checkpoints in the same chunk. The checkpoint's blocks are binding. It writes that checkpoint's Built block and Status, and appends to C2 and C3. A missing fact with one clear answer in the conventions, patterns or code is decided by the build and listed in the Built block's "Decided myself"; one that touches the design, scope, Requirements, Architecture, money or security stops the build for the PO and is never filled in from other sources. Either change is made in place, with its reason in A14 or A12 and one line in Versions. The close applies C2 to the current documents and freezes the plan.
+> **When `/build-chunk` reads it:** the header, Part A in full, the checkpoint being built (or Part C), and the Built blocks of earlier checkpoints in the same chunk. The checkpoint's blocks are binding. It writes that checkpoint's Built block and Status, and appends to C2 and C3. A missing fact with one clear answer in the conventions, patterns or code is decided by the build and listed in the Built block's "Decided myself"; one that touches the design, scope, Requirements, Architecture, money or security stops the build for the PO and is never filled in from other sources. Either change is made in place, with its reason in A14 or A12 and one line in Versions. The close applies C2 to the current documents and freezes the plan.
 >
 > **File:** `projects/{CODE}/delivery/units/b{UU}-{slug}.md`, where `{UU}` is the design group's number (`b03-staff-and-roles.md`) or the unit's short name (`b-spine-first-payment.md`).
 
@@ -231,7 +231,7 @@ Not applicable: [concerns, comma-separated].
 
 > **Guide.** **A checkpoint is one behaviour a reviewer can see work:** usually one user action, from the surface down to the database, with its tests. A checkpoint with nothing to see stands alone only when it is security- or data-critical, proved through the API. Order: the list that shows records, then the action that creates them, then the actions that change them.
 >
-> **Chunks:** 2 to 5, each one capability a named role can use, with a one-sentence demo. One pull request per chunk, one commit per checkpoint. **Size:** about 600 changed lines per checkpoint, not counting tests, generated files and migrations; split by surface or action, never by layer.
+> **Chunks:** 2 to 5, each one capability a named role can use, with a one-sentence demo. One pull request per chunk into the unit's branch `b03`, merged by its builder once CI passes; one commit per checkpoint. **Size:** about 600 changed lines per checkpoint, not counting tests, generated files and migrations; split by surface or action, never by layer.
 
 | Checkpoint | Goal | Surfaces | Endpoints | Depends on | Status |
 |---|---|---|---|---|---|
@@ -269,11 +269,13 @@ Not applicable: [concerns, comma-separated].
 
 **B03.1 acceptance (PO)**
 
-> **Guide.** The steps the PO follows on the running product before the chunk merges, in the screen's own words, with the seed's people.
+> **Guide.** The steps the PO follows on the running product, on the unit's branch, in the screen's own words, with the seed's people. The PO runs them when it suits, before the unit merges into the main line.
 
 | # | Step | Expected | Compare with |
 |---|---|---|---|
 | 1 | [Sign in as … and do …] | [What shows] | [Exact artboard title, or —] |
+
+**Accepted by the PO:** [date, or "not yet"; any fix branch it needed]
 
 ---
 
@@ -281,7 +283,7 @@ Not applicable: [concerns, comma-separated].
 
 ## C1. Close, B03.X
 
-> **Guide.** Built last by `/build-checkpoint`: the demo end to end, the regression of every closed unit, the financial checks where money moved, the merge and the deploy. Then promotion (C2), then the plan is frozen. The PO and the developer sign off.
+> **Guide.** Built last by `/build-chunk`: the demo end to end, the regression of every closed unit, the financial checks where money moved, the merge and the deploy. Then promotion (C2), then the plan is frozen. The PO and the developer sign off.
 
 **Demo:**
 
@@ -306,7 +308,7 @@ Not applicable: [concerns, comma-separated].
 
 ## C3. Findings for later units
 
-> **Guide.** What a later unit must act on. `/build-checkpoint` appends here; `/plan-unit` reads this section of every closed plan.
+> **Guide.** What a later unit must act on. `/build-chunk` appends here; `/plan-unit` reads this section of every closed plan.
 
 | Found in | What | Goes to |
 |---|---|---|
@@ -471,7 +473,7 @@ Indexes: [each, and the query it serves].
 
 **Cross-tenant access:** [operator roles; which tenants and how one is chosen; how every access is recorded; what is never allowed.]
 
-**Built block** (added by `/build-checkpoint`, at most ten lines)
+**Built block** (added by `/build-chunk`, at most ten lines)
 
 **Built B03.1.1** ([date], [time taken]): [result in one sentence]
 - Files: [by area]

@@ -1,6 +1,6 @@
-# Build Checkpoint
+# Build Chunk
 
-Builds the checkpoints of an approved unit plan, one at a time, verifying and recording each (METHOD.md section 8.3). Started on a chunk's checkpoint, it goes on through the rest of the chunk without waiting, and stops only for something the PO must answer, a failure it can't fix within the plan, or the chunk's end (MD-002). A checkpoint is one behaviour a reviewer can see work, from the surface down to the database, with its own tests: small enough for the developer to review as one commit, and a chunk small enough to review as one pull request. Run for the unit's close (`B{UU}.X`), it also promotes what the unit settled into the current documents and freezes the plan (section 8.4).
+Builds one chunk of an approved unit plan, one checkpoint at a time, verifying, recording and committing each (METHOD.md section 8.3). It goes through the chunk without waiting, and stops only for something the PO must answer, a failure it can't fix within the plan, or the chunk's end (MD-002, MD-003). A checkpoint is one behaviour a reviewer can see work, from the surface down to the database, with its own tests: small enough for the developer to review as one commit, and a chunk small enough to review as one pull request. Run for the unit's close (`B{UU}.X`), it also promotes what the unit settled into the current documents and freezes the plan (section 8.4).
 
 It runs in the plan's order, after `/plan-unit` has written the plan and the PO and the developer have approved it. It reads the plan and the code, not the wider documents: the plan already carries every fact and decision. A gap with one clear answer in the conventions, patterns or code it decides itself and lists; a gap that changes the design, scope, Requirements, Architecture, money or security behaviour, or needs a dependency, a secret or a product answer, it asks. It produces code on the chunk's branch, one commit per checkpoint with its Built block. It never pushes or merges, except that the close merges the unit's branch and deploys only when the PO says so.
 
@@ -16,18 +16,18 @@ In worklog mode (METHOD.md section 10), the Built block, status changes and find
 
 ## Step 1: Parse arguments
 
-Required: a project code and a checkpoint ID. Optional: `--check-tests`, `--one`.
+Required: a project code and a chunk or checkpoint ID. Optional: `--check-tests`, `--one`.
 
 - **Project code:** the folder under `projects/`.
-- **Checkpoint ID:** from the unit's plan, e.g. `B03.1.2`, or `B03.X` for the close.
+- **Chunk or checkpoint ID:** from the unit's plan. A chunk (`B03.2`) starts at its first checkpoint not yet built; a checkpoint (`B03.2.3`) resumes from there; `B03.X` is the close.
 - **`--check-tests`:** after the tests pass, break the code on purpose to prove they can fail (Step 7). Always done for a checkpoint with a money command, given or not.
-- **`--one`:** build only this checkpoint, then stop, instead of going on to the chunk's end.
+- **`--one`:** build only the named checkpoint, then stop, instead of going on to the chunk's end.
 
 If anything is missing, ask for all of it in one message:
 
-> "To build a checkpoint I need:
+> "To build I need:
 > 1. **Project code:** the folder under `projects/`
-> 2. **Checkpoint ID:** from the unit's plan (e.g. `B03.1.2`); `delivery/index.md` lists the plans"
+> 2. **Chunk or checkpoint ID:** from the unit's plan (e.g. `B03.2`, or `B03.2.3` to resume); `delivery/index.md` lists the plans"
 
 Wait for the PO's response.
 
@@ -44,7 +44,8 @@ Wait for the PO's response.
 | Checkpoint exists | The ID is a row in the plan's B0, or `B{UU}.X` | > "{ID} isn't in B{UU}'s plan." |
 | Not already built | Its Status is `Planned`, and no worklog holds a Built entry for it | > "{ID} is already {STATUS}. Rebuilding it replaces its Built block. Rebuild it?" |
 | Earlier checkpoints built | Every checkpoint above it in B0 is `Built` (in the plan or a Built entry); for the close, all of them | > "{ID} comes after {IDS}, which aren't built. Build them first, or tell me to continue anyway." |
-| Earlier chunk merged | For a chunk's first checkpoint: the previous chunk's pull request is merged into the unit's branch | > "Chunk {PREVIOUS} isn't merged into `b{UU}` yet, so this chunk wouldn't start from it. Continue anyway?" |
+| Earlier chunk merged | For a chunk's first checkpoint: the previous chunk's pull request is merged into the unit's branch (by its builder, once CI passes) | > "Chunk {PREVIOUS} isn't merged into `b{UU}` yet, so this chunk wouldn't start from it. Continue anyway?" |
+| Every chunk accepted | For the close: every chunk's "Accepted by the PO" line is filled | > "Chunk {IDS} isn't accepted yet. The PO reads its report and runs its acceptance steps on `b{UU}` first." |
 | Units it depends on closed | Every unit in the plan's Depends on is `Closed` in `delivery/index.md` | > "B{UU} depends on {UNITS}, which aren't closed. Continue anyway?" |
 | Clean start | Each code repository the checkpoint touches is on the chunk's branch (or the unit's branch, for a chunk's first checkpoint) with no uncommitted changes | > "{REPO} has uncommitted changes on {BRANCH}. The previous checkpoint's commit comes first, so this one stands on its own." |
 | Plan still matches the code | Commits since the plan's Code base commit, other than this unit's own, change no module, table, endpoint or shared part Part A names | > "Since the plan was reconciled, {COMMITS} changed {WHAT}, which the plan relies on in {SECTIONS}. My recommendation: [the plan change / no change, because …]. Go on?" |
@@ -57,7 +58,7 @@ On any failure, show the message and wait.
 
 Record the start time now; it goes in the Built block. Read, in this order:
 
-1. `projects/{CODE}/CLAUDE.md`: project rules, its stack profile, and its row for `/build-checkpoint`.
+1. `projects/{CODE}/CLAUDE.md`: project rules, its stack profile, and its row for `/build-chunk`.
 2. **The plan, in parts:** the header, Part A in full (A0 to A14), the checkpoint's section (or Part C for the close), B0, the Built blocks of earlier checkpoints in the same chunk, C2 and C3. **The checkpoint's blocks are binding, and so is Part A.**
 3. **In worklog mode:** every worklog's unapplied entries on this plan (Built, Status, Change, Finding). With the plan, they are its current state: an earlier Built block may still be an entry, and a Change entry may already correct a block this checkpoint uses. Where an entry in another person's worklog disagrees with the plan, say so in Step 4.
 4. `standards/conventions.md`, in full, and the entries of `standards/patterns.md` the blocks name.
@@ -222,8 +223,9 @@ Changed:        the plan, delivery/index.md (not committed)
                 {or, in worklog mode: entries {IDs} in worklogs/{name}.md}
 Needs the PO:   {anything left open, or none}
 ─────────────────────────────────────────
-Next: the developer reviews the commits and their Built blocks; the PO
-reads "Decided myself" and runs the acceptance steps; then the chunk's
-branch is pushed and its pull request opened into b{UU}. Then
-/build-checkpoint {CODE} {NEXT_CHUNK_FIRST_ID}
+Next: the builder pushes the chunk's branch, opens its pull request into
+b{UU} and merges it once CI passes. The PO accepts the chunk when it suits:
+reads "Decided myself" and the differences, runs the acceptance steps on
+b{UU}, and fills the chunk's "Accepted by the PO" line; anything found is a
+fix branch into b{UU}. Then /build-chunk {CODE} {NEXT_CHUNK}
 ```
