@@ -68,7 +68,7 @@ Read in this order. Where the project's `CLAUDE.md` names a different path or a 
 9. **The group's artboards**, in full, found as the design runbook (`runbooks/design.md`) says: every surface's parts, states, text and sample values. Quote each artboard by its exact title, `SCR-NNN Screen name · state`. If the group's artboards don't carry that form, stop and ask the PO to retitle them first.
 10. `requirements/requirements.md`, in parts: the language in full (binding); the domain areas for this unit's records (capabilities, lifecycles, rules, validations); rules across areas; the variations, scenarios and acceptance rows naming its records; its open questions.
 11. `charter/charter.md`, in parts: the unit's capability rows (target, stage) and the quality floor.
-12. `architecture/architecture.md`, in full. Its module list, kinds, layers and folders are the only source of module names and file paths; §4 gives each command's consistency row.
+12. `architecture/architecture.md`, in parts: §1 (shape), §3 (modules, kinds, layers, folders: the only source of module names and file paths), §4 (each command's consistency row), §6 (data, tenancy, security) and §10 (not decided yet); §2, §5, §7, §8 and §9 only where the unit touches a foundation, an integration, an event, scale or a seam.
 13. `standards/conventions.md` and `standards/patterns.md`, in full.
 14. `decisions.md`, in parts: every decision naming this group, its screens, its records or its modules. A decision wins over an older document text it changed; if it seems to contradict a current document, say so in Step 7 rather than choose.
 15. **Earlier plans** in `delivery/units/`, in parts: the header, A0, A2's surface table, A4, A6, A7, A11 and C3. They say what exists, which IDs are taken, and what was moved into this unit. Closed plans: C3 only, unless a row names this unit.
@@ -154,6 +154,7 @@ Before asking the PO anything, run the plan checks below against the decisions a
 - Small blocks are sentences.
 - Names and IDs: artboards by exact title; a repeat's answer says what happens, then the key or "no key"; client functions and query keys carry their action or query ID; every file path is inside its module's folder; roles, not people, except seed data.
 - The header's Sources and Versions are one line each; no checklist or working notes are left in the plan.
+- Length in check: Part A and each checkpoint section are as short as their decisions allow, with no fact the build doesn't need and nothing said twice. A part that runs long has its one-line reason in the header's Length line; there is no fixed limit (MD-002).
 
 ---
 

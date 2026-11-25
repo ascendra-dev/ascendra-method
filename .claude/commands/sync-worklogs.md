@@ -94,14 +94,17 @@ In one message: every conflict, every entry needing the PO, every entry going ba
 > **Back to the author**
 > 3. [A-9: no exact text to replace.] It stays in the developer's worklog to fix.
 >
-> **Applies cleanly:** [N] entries
-> - `decisions.md`: Z-1, A-2 (become DEC-200, DEC-201)
-> - `delivery/units/b03-staff-and-roles.md`: Built B03.1.1, B03.1.2 (A-1, A-3)
+> **Decisions that apply cleanly** (one line each, to skim)
+> - A-2, the developer: [question] → [answer] (becomes DEC-201)
+> - Z-1, the PO: [question] → [answer] (becomes DEC-200)
+>
+> **Everything else that applies cleanly:** [N] entries, counted only
+> - `delivery/units/b03-staff-and-roles.md`: Built B03.1.1, B03.1.2 (A-1, A-3), each with its "Decided myself" count
 > - `delivery/index.md`: recount
 >
 > Answer by number, or 'yes to all'. Where a conflict touches another person's work, they should be here, or agree first."
 
-Ask in plain chat. A resolution can turn an entry into another (a Decision into a Change, two into one): note it and apply the result. An answer that opens a new question is its own numbered item.
+Every clean Decision entry is listed as its one line, so the PO reads the decisions without reading entries; Built, Status, Change, Finding and New file entries that apply cleanly are counted, not shown (MD-002). Ask in plain chat. A resolution can turn an entry into another (a Decision into a Change, two into one): note it and apply the result. An answer that opens a new question is its own numbered item.
 
 In `check` mode, show the message without its last line, then go to Step 8's report and write nothing.
 

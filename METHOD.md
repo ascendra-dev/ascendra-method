@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| Version | 1.3 |
+| Version | 1.4 |
 | Date | 2026-11-25 |
 | Status | Agreed by the PO, 2026-11-25 |
 
@@ -91,7 +91,7 @@ Agreed with the PO, 2026-11-25. One meaning per word.
 | **Design rule** | A settled rule for how screens look and behave, kept once in the design rules | `DR-001` |
 | **Unit** | What is planned and built as one: usually one design group; sometimes part of one, or a named unit with no screens (a money spine, a security unit). Parts of another group a unit carries stay inside it, and the build index says so. Build order lives in the build index, never in the ID | `B03` builds `G03`; `B08a`, `B08b` split a group; `B-SPINE` has no group |
 | **Build plan** | One unit's plan: its decisions, then its chunks and checkpoints | file `delivery/units/b03-{slug}.md` |
-| **Chunk** | A capability a named role can use, demonstrated in one sentence. One pull request; the PO accepts it before it merges | `B03.1`, `B-SPINE.1` |
+| **Chunk** | A capability a named role can use, demonstrated in one sentence. One pull request into the unit's branch; the PO accepts it before it merges. The unit's branch merges into the main line once, at the close | `B03.1`, `B-SPINE.1` |
 | **Checkpoint** | One behaviour a reviewer can see work, from the screen down to the database, with its tests. One commit | `B03.1.1`, `B-SPINE.1.2` |
 | **Close** | The unit's last step: final checks, promotion (section 8.4), sign-off | `B03.X`, `B-SPINE.X` |
 | **Surface** | A page, form, sheet, dialog, menu, table, card or email that a build plan names and builds | `page.staff.list`, `form.staff.invite` |
@@ -192,7 +192,7 @@ The split is reviewed by its disposition table: every Blueprint section, and whe
 | Status | One page, about 400 words |
 | Decision log entry | Two lines |
 | Worklog entry | Its fixed fields, no narrative |
-| Build plan | No fixed limit. Complete in itself, with each fact once (section 8.2) |
+| Build plan | No fixed limit: as short as its decisions allow, complete in itself, with each fact once (section 8.2). A part that runs long states why in the plan's header |
 | Checkpoint | About 600 changed lines of code, not counting tests, generated files and migrations. A larger one is split by surface or action, never by layer |
 
 ---
@@ -271,9 +271,14 @@ The PO and the developer approve the plan before building starts. Plans are writ
 
 ### 8.3 Building
 
-One checkpoint at a time, in the plan's order. The build reads the plan and the code, not the wider sources: the plan carries everything it needs. Before building, the AI raises any gap it finds; the PO settles it and the plan is corrected. After building: tests pass, the checkpoint's Built block records what was built, how long it took, differences from the plan and the commit.
+One checkpoint at a time, in the plan's order, each verified and committed on its own; the build goes on through the chunk and stops only for the PO, a failure it can't fix within the plan, or the chunk's end. The build reads the plan and the code, not the wider sources: the plan carries everything it needs. A gap the plan leaves is sorted:
 
-At a chunk's last checkpoint the PO runs its acceptance steps on the running product, then its pull request merges.
+- **Asked:** it changes the design, the scope, Requirements, Architecture, money or security behaviour, or needs a dependency, a secret or a product answer. The PO settles it before it is built.
+- **Decided by the AI:** any other gap with one clear answer in the conventions, patterns, the plan's own decisions or the existing code. The AI decides, builds, and lists it.
+
+Either way the plan is corrected in place. After building: tests pass, and the checkpoint's Built block records what was built, how long it took, what the AI decided itself, differences from the plan and the commit. At the chunk's end one report gives the acceptance steps and every decided item.
+
+At a chunk's end the PO reads what the AI decided and runs the acceptance steps on the running product, then the chunk's pull request merges into the unit's branch. At the close, after the regression, the unit's branch merges into the main line.
 
 ### 8.4 Closing a unit and promotion
 
@@ -392,3 +397,4 @@ Writing the Blueprint is done with the AI, guided by its template and `guides/`,
 | 1.1 | 2026-11-25 | Layout: Charter and Requirements each get a folder (`charter/`, `requirements/`), so Requirements can split by domain area; templates are named `{name}.template.md` |
 | 1.2 | 2026-11-25 | Standards becomes its own artifact and folder (`standards/conventions.md`, `standards/patterns.md`), the project-level twin of the stack profile; Architecture holds only the expensive-to-change decisions |
 | 1.3 | 2026-11-25 | Section 11: a library's own reference documents are linked, never copied; usage rules learned while building with it live in the stack profile |
+| 1.4 | 2026-11-25 | MD-002: plans keep their length in check with a stated reason; gaps asked or decided by the AI; building through the chunk; chunk pull requests into the unit's branch, merged into the main line at the close |

@@ -18,7 +18,7 @@
 > - **Names roles, not people,** except the sample people of the seed.
 > - **Names artboards by their exact title**, `SCR-NNN Screen name · state`.
 >
-> **When `/build-checkpoint` reads it:** the header, Part A in full, the checkpoint being built (or Part C), and the Built blocks of earlier checkpoints in the same chunk. The checkpoint's blocks are binding. It writes that checkpoint's Built block and Status, and appends to C2 and C3. A wrong or missing fact stops the build for the PO and is never filled in from other sources; an agreed change is made in place, with its reason in A14 or A12 and one line in Versions. The close applies C2 to the current documents and freezes the plan.
+> **When `/build-checkpoint` reads it:** the header, Part A in full, the checkpoint being built (or Part C), and the Built blocks of earlier checkpoints in the same chunk. The checkpoint's blocks are binding. It writes that checkpoint's Built block and Status, and appends to C2 and C3. A missing fact with one clear answer in the conventions, patterns or code is decided by the build and listed in the Built block's "Decided myself"; one that touches the design, scope, Requirements, Architecture, money or security stops the build for the PO and is never filled in from other sources. Either change is made in place, with its reason in A14 or A12 and one line in Versions. The close applies C2 to the current documents and freezes the plan.
 >
 > **File:** `projects/{CODE}/delivery/units/b{UU}-{slug}.md`, where `{UU}` is the design group's number (`b03-staff-and-roles.md`) or the unit's short name (`b-spine-first-payment.md`).
 
@@ -35,6 +35,7 @@
 | Size | [N chunks, N checkpoints, and the close] |
 | Sources | [One line: the documents and code read, by name] |
 | Versions | [1.0 YYYY-MM-DD: first plan (DEC-NNN). One line per later version: what changed, and the decision] |
+| Length | [Delete this row unless a part runs long: the part, and why it needs the length] |
 
 ---
 
@@ -474,6 +475,7 @@ Indexes: [each, and the query it serves].
 
 **Built B03.1.1** ([date], [time taken]): [result in one sentence]
 - Files: [by area]
+- Decided myself: [each gap decided without the PO, with its one-line reason, or "none"]
 - Differences from the plan: [each, or "none"]
 - Tests: [passed, where; parity result]
-- Commit: `[message]`
+- Commit: `[sha]` `[message]`, on `b03.1-{slug}`
