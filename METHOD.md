@@ -2,9 +2,9 @@
 
 | Field | Value |
 |---|---|
-| Version | 1.5 |
-| Date | 2026-11-25 |
-| Status | Agreed by the PO, 2026-11-25 |
+| Version | 1.6 |
+| Date | 2026-11-27 |
+| Status | Agreed by the PO, 2026-11-27 |
 
 A method for one product owner and an AI to take a product from an idea to production, with full control over every decision. It works for any domain and any business. Examples in this document come from a fee collection product and are illustrations only.
 
@@ -99,6 +99,10 @@ Agreed with the PO, 2026-11-25. One meaning per word.
 | **Decision** | Something the PO settled that changes a current document | `DEC-001` in the decision log; a project carried over from an earlier log keeps its numbers |
 | **Plan decision** | A decision inside one build plan, part of its content | `D1`, and `P1` for a design proposal, local to the plan; cited from outside it with the unit: "B03 D33" |
 | **Entry** | A worklog entry, provisional until synced | `{initial}-{n}`, for example `Z-3`; a sync turns a decision entry into a `DEC-NNN` |
+| **Test case** | One manual test a person runs: setup, steps, expected result, built from a unit's plan. Its type names the part of the plan it comes from (flow, state, rule, role, lifecycle, effect, check). Never "test" alone, which is an automated test | `B02.3-04` |
+| **Registry** | A unit's test cases and their coverage of its plan | file `delivery/testing/b02/registry.json` |
+| **Round** | One pass of manual testing over a scope, against one commit | `B02-R1` |
+| **Issue** | What triage makes of a tester's feedback: a bug, a gap or a suggestion, with its status. Never "finding", which is a worklog entry kind and a plan's note for a later unit | `ISS-001`, numbered across the project |
 
 A design group and a unit are deliberately different words: design order and build order start the same and then diverge (a unit may be built before an earlier group, or carry another group's parts).
 
@@ -142,6 +146,7 @@ Every project holds the same artifacts. Each has one job.
 | **Decision log** | One entry per decision: ID, date, who, what, one line of why, link to the document it changed | Log |
 | **Runbooks** | How to do a recurring procedure: environments, deploy, publishing designs, rebuilding the design system | Runbook |
 | **Worklogs** | Each person's entries in worklog mode | Log, emptied at each sync |
+| **Testing** | Each unit's registry, each round's results (one file per person), the project's issues (section 8.5) | Registry living until the unit's close, then frozen; results log; issues living |
 | **Archive** | Frozen documents moved out of the way | Frozen |
 
 ---
@@ -297,6 +302,19 @@ The close runs the final checks (the demo, the regression of every closed unit, 
 
 Then the plan is frozen and the PO signs off. The next unit reads current truth, never an earlier plan.
 
+### 8.5 Manual testing
+
+People test each unit by hand, record results and raise what they notice. It is a separate activity beside the build (MD-004):
+
+- **One way only.** Testing reads the plans, Requirements and the design; no command, template or build step reads testing's files. Testing returns only through existing channels: a bug is a fix branch; a gap or suggestion is a PO decision that corrects a current document (section 9), or a finding for a later unit.
+- **The registry is built from the plan,** never written apart from it, nor edited by hand. Built in full when the plan is approved; rebuilt where the plan changed when a round starts; frozen at the close. Cases come from every part of the plan a person can see: acceptance (flow), design parity (state), rule codes with a screen state (rule), actions and roles (role), lifecycle (lifecycle), what each command causes (effect), developer's checks (check). Its coverage list names every such plan item and its case, so nothing is skipped quietly. The only cases not from the plan are those added for an issue no case covered.
+- **Rounds.** A round's case list is fixed when it starts. Round 1 runs every case in its scope; later rounds run the failed and blocked cases, those touching a surface a fix changed, and those not run; the rest keep their result. A chunk's round ending with no Fail and no open issue is the PO's acceptance of the chunk. The close's regression is a round over every closed unit's cases.
+- **Results and triage.** Each tester writes only their own results file: a status per case (not run, pass, fail, blocked, skipped), a note, and feedback (bug, gap, suggestion). After each round the AI proposes an issue for each piece of feedback and the PO settles it: fixed and then verified by a later round, decided (`DEC-NNN`), later (a unit), or won't fix.
+- **A unit closed before testing began** gets a regression baseline: a registry built once from its frozen plan, a first round on the main line, bugs fixed by a small branch into the main line; the plan is never reopened.
+- **Files only.** No database, no API, no report. A local-only page in the product's web app runs the cases and saves the tester's results; how it is built is in the stack profile.
+
+The file formats and the procedure are in `guides/manual-testing.md`.
+
 ---
 
 ## 9. Changes
@@ -314,6 +332,8 @@ For a project where two or more people work at once.
 - The PO applies all entries at each chunk's acceptance (the sync), resolves conflicts, numbers the decisions and empties the worklogs.
 - **The hold:** whoever holds it edits the current documents directly, for a day working alone or a planning session. The other keeps writing their worklog.
 - **Turns, not overlap:** when people take turns (one builds a chunk, then the other), the hold passes with the chunk and the builder records directly in the plan; there is nothing to sync. Worklogs are written only while work overlaps in time: two chunks at once, or building beside planning (MD-003).
+
+- **Testing's files are outside the hold and the worklogs** (section 8.5): each file has one writer (a tester their own results, triage the registry and issues), so nothing is synced.
 
 A one-person project edits documents directly.
 
@@ -358,7 +378,7 @@ projects/{CODE}/
 ├── architecture/        architecture.md
 ├── standards/           conventions.md, patterns.md
 ├── experience/          screen-map.md, design-rules.md, sample-data.md, design/, design-system/
-├── delivery/            index.md, units/
+├── delivery/            index.md, units/, testing/
 ├── runbooks/
 ├── worklogs/
 └── archive/
@@ -382,7 +402,7 @@ Only commands proven in real work, or clearly needed (principle 9).
 | `/build-chunk` | Delivery | Builds a chunk one checkpoint at a time, each verified, recorded and committed; or one checkpoint with `--one`; or the close with its promotion |
 | `/sync-worklogs` | Delivery | Applies every worklog entry, in worklog mode |
 
-Writing the Blueprint is done with the AI, guided by its template and `guides/`, not by a command, until a command earns its place.
+Writing the Blueprint is done with the AI, guided by its template and `guides/`, not by a command, until a command earns its place. So is manual testing (section 8.5), from `guides/manual-testing.md`.
 
 ---
 
@@ -400,3 +420,4 @@ Writing the Blueprint is done with the AI, guided by its template and `guides/`,
 | 1.3 | 2026-11-25 | Section 11: a library's own reference documents are linked, never copied; usage rules learned while building with it live in the stack profile |
 | 1.4 | 2026-11-25 | MD-002: plans keep their length in check with a stated reason; gaps asked or decided by the AI; building through the chunk; chunk pull requests into the unit's branch, merged into the main line at the close |
 | 1.5 | 2026-11-25 | MD-003: `/build-checkpoint` renamed `/build-chunk`; the builder merges a chunk into the unit's branch, the PO accepts it and alone merges the unit into the main line; the hold passes with the chunk when people take turns |
+| 1.6 | 2026-11-27 | MD-004: manual testing, a separate activity nothing reads (§8.5); terms Test case, Registry, Round, Issue; Testing under Operations; `delivery/testing/`; testing's files outside the hold |

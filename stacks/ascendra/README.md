@@ -23,6 +23,7 @@ The library's own documents are read where they live, never copied here.
 | [`ui/code-style.md`](ui/code-style.md) | How the JSX and TypeScript around components is written | `/build-chunk` |
 | [`commons.md`](commons.md) | Adopting a commons module; `.core`-only imports; logging changes to copies | `/plan-unit` (A6), `/build-chunk` |
 | [`canvas.md`](canvas.md) | Drawing with the real components on a design canvas | `/design-group` |
+| [`testing-page.md`](testing-page.md) | The local-only manual test page in the web app (METHOD.md §8.5) | No command; manual testing |
 
 ## What a plan takes from this profile
 

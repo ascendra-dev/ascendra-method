@@ -35,6 +35,16 @@ Read `STATUS.md`, then the document the next step names.
 |---|---|
 | [command] | [files and sections] |
 
+## Manual testing
+
+> **Guide.** METHOD.md section 8.5 and `guides/manual-testing.md` hold the rules. Fill this once the first registry is built; until then leave the placeholders. No command reads `delivery/testing/`.
+
+| Field | Value |
+|---|---|
+| Testers | `delivery/testing/people.json` |
+| Test page | [Its local address, e.g. `http://localhost:3000/dev/manual-tests`] |
+| Path setting | [The setting in the web app's local environment file that names `delivery/testing/`, as the stack profile says] |
+
 ## Worklog mode
 
 > **Guide.** Delete this section while one person works on the project. When two or more work at once, list each person; METHOD.md section 10 and `worklogs/worklog.template.md` hold the rules.
