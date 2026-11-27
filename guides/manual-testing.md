@@ -252,6 +252,6 @@ The chunk is ready for the PO's acceptance when its cases have no `fail` and its
 The product's web app has one page, running only in local development, that reads the files above and saves the current tester's results file. How it is built for a technology is in the stack profile (`stacks/{name}/testing-page.md`). It shows:
 
 - a header: tester, unit, round, the round's commit and branch;
-- **Cases:** the units and chunks with their pass, fail and not-run counts; filters by type and by "this round", "failing", "not run"; for each case its setup, steps, expected result and artboards, earlier rounds' results by person, and Pass, Fail, Blocked, Skip, a note and feedback;
+- **Cases:** the units and chunks with their pass, fail and not-run counts; filters by type, by "this round", "failing", "not run", and by feedback (a bug, a gap or a suggestion); for each case its setup, steps, expected result and artboards, earlier rounds' results by person, and Pass, Fail, Blocked, Skip (or Clear result), a note and feedback, saved with Save;
 - **Issues:** read only, filtered to the unit;
 - **Coverage:** each plan item and its cases, those with none in red.
